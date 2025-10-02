@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
-    "release": "turbo release --concurrency=1"
+    "release": "turbo release --concurrency=1 && release-it --ci"
   },
   "devDependencies": {
     "turbo": "2.5.8"

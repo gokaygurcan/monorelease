@@ -9,9 +9,9 @@ module.exports = {
       infile: 'CHANGELOG.md',
       preset: 'conventionalcommits',
       gitRawCommitsOpts: {
-        path: '.',
-      },
-    },
+        path: '.'
+      }
+    }
   },
   git: {
     push: true,
@@ -19,19 +19,21 @@ module.exports = {
     commitsPath: '.',
     commitMessage: `chore(${scope}): released version v${version}`,
     requireCommits: true,
-    requireCommitsFail: false,
+    requireCommitsFail: false
   },
   npm: {
     publish: false,
-    versionArgs: ['--workspaces false'],
+    versionArgs: [
+      '--workspaces false'
+    ]
   },
   github: {
     release: true,
-    releaseName: `${packageName}-v${version}`,
+    releaseName: `${packageName}-v${version}`
   },
   hooks: {
     'before:git:release': [
-      'git add --all',
-    ],
-  },
+      'git add --all'
+    ]
+  }
 };
