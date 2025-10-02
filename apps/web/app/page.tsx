@@ -1,5 +1,6 @@
 'use client';
 
+import { ThemeToggle } from '@/components/theme-toggler';
 import { Toaster } from '@/components/toaster';
 
 export default function Homepage() {
@@ -8,7 +9,10 @@ export default function Homepage() {
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className="text-2xl font-bold">Hello World</h1>
 
-        <Toaster />
+        <div className="flex gap-2">
+          <Toaster />
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );

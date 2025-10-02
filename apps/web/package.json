@@ -10,6 +10,7 @@
     "release": "release-it --ci"
   },
   "dependencies": {
+    "@tabler/icons-react": "3.35.0",
     "@workspace/ui": "workspace:*",
     "lucide-react": "0.544.0",
     "next": "15.5.4",
