@@ -1,60 +1,54 @@
 name: Release
 
 on:
-  workflow_dispatch:
-  push:
-    branches: master
+  release:
+    types:
+      - published
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   release:
+    name: Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+    - id: checkout
+      name: Checkout
+      uses: actions/checkout@v4
 
-      - name: Setup SSH keys
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: github.com
+    - id: setup-bun
+      name: Setup Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: latest
 
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - id: install-dependencies
+      name: Install dependencies
+      run: |
+        bun install
 
-      - name: Setup node cache
-        id: node-cache
-        uses: actions/cache@v3
-        with:
-          path: '**/node_modules'
-          key: yarn-${{ hashFiles('yarn.lock') }}-${{ hashFiles('package.json') }}
-          restore-keys: yarn-
+    - id: turbo-telemetry
+      name: Turbo telemetry
+      run: |
+        bunx turbo telemetry status
+        bunx turbo telemetry disable
 
-      - name: Setup turbo cache
-        uses: actions/cache@v3
-        with:
-          path: '.turbo'
-          key: turbo-${{ github.ref_name }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ github.ref_name }}-
-            turbo-master-
+    - id: setup-git
+      name: Setup Git
+      run: |
+        git config user.name "$GIT_USER_NAME"
+        git config user.email "$GIT_USER_EMAIL"
+      env:
+        GIT_USER_NAME: ${{ vars.GIT_USER_NAME }}
+        GIT_USER_EMAIL: ${{ vars.GIT_USER_EMAIL }}
 
-      - name: Install deps
-        if: steps.node-cache.outputs.cache-hit != 'true'
-        run: yarn --ignore-scripts --prefer-offline --frozen-lockfile
-
-      - name: Setup git
-        run: |
-          git config user.name "$GIT_USER_NAME"
-          git config user.email "$GIT_USER_EMAIL"
-        env:
-          GIT_USER_NAME: ${{ vars.GIT_USER_NAME }}
-          GIT_USER_EMAIL: ${{ vars.GIT_USER_EMAIL }}
-
-      - name: Release
-        run: yarn release --cache-dir=.turbo
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+    - id: release
+      name: Release
+      run: bun run release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
