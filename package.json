@@ -1,26 +1,19 @@
 {
-  "name": "mono",
+  "name": "@gokaygurcan/monorelease",
   "version": "0.0.0",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "workspaces": [
-    "apps/app-a",
-    "apps/app-b",
-    "libs/lib-a",
-    "libs/lib-b",
-    "libs/lib-c",
-    "configs/config-release-it"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
-    "start": "turbo start",
-    "prepare": "husky install",
+    "dev": "turbo dev",
+    "build": "turbo build",
     "release": "turbo release --concurrency=1"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.6.1",
-    "@commitlint/config-conventional": "17.6.1",
-    "husky": "8.0.3",
-    "turbo": "1.9.3"
+    "turbo": "2.5.8"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "bun@1.2.23"
 }

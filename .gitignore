@@ -1,7 +1,4 @@
-.idea
-.turbo
-.vscode
-
-*.log
-
-node_modules
+**/.env*
+**/.next/
+**/.turbo/
+**/node_modules/

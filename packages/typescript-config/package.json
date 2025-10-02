@@ -1,0 +1,15 @@
+{
+  "name": "@workspace/typescript-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "release": "release-it --ci"
+  },
+  "devDependencies": {
+    "@workspace/release-it": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
